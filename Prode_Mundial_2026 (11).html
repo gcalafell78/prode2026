@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prode Mundial 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init("c_mFbLTjHp0r78onD");</script>
+<style>
+  :root {
+    --bg:#0a0e1a; --card:#111827; --border:#1e2d45;
+    --accent:#f5a623; --accent2:#e8341a; --text:#e8eaf0;
+    --muted:#6b7a99; --green:#22c55e; --input-bg:#0d1420; --red:#e8341a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;
+    background-image:radial-gradient(ellipse at 20% 0%,#1a2a4a44 0%,transparent 60%),radial-gradient(ellipse at 80% 100%,#2a1a0a33 0%,transparent 60%)}
+  header{text-align:center;padding:48px 24px 32px;position:relative}
+  header::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#f5a62308 0%,transparent 100%);pointer-events:none}
+  .trophy{font-size:56px;line-height:1;margin-bottom:12px}
+  header h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,8vw,80px);letter-spacing:4px;line-height:.9;
+    background:linear-gradient(135deg,#f5a623,#fff,#f5a623);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  header h1 span{display:block;font-size:clamp(18px,3vw,26px);letter-spacing:8px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-top:4px}
+  .subtitle{margin-top:16px;color:var(--muted);font-size:14px;letter-spacing:1px}
+  .container{max-width:760px;margin:0 auto;padding:0 16px 80px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:20px;position:relative;overflow:hidden}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .card label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+  .card select,.card input{width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:10px;color:var(--text);
+    font-family:'Barlow',sans-serif;font-size:17px;font-weight:600;padding:14px 16px;transition:border-color .2s}
+  .card select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7a99' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+  .card select:focus,.card input:focus{outline:none;border-color:var(--accent)}
+  .card input::placeholder{color:var(--muted);font-weight:400}
+  .pin-row{display:flex;gap:10px;margin-top:16px}
+  .pin-row input{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:6px;text-align:center;border-width:2px}
+  .pin-row input.error{border-color:var(--red);animation:shake .3s}
+  .pin-row input.ok{border-color:var(--green)}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+  .btn-verify{padding:0 24px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:10px;
+    color:#fff;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;white-space:nowrap;transition:opacity .2s}
+  .btn-verify:hover{opacity:.88}
+  .pin-status{margin-top:10px;font-size:13px;font-weight:600;min-height:18px}
+  .pin-status.ok{color:var(--green)}.pin-status.err{color:var(--red)}
+  .pin-attempts{color:var(--muted);font-size:12px;margin-top:4px}
+  .email-note{margin-top:10px;font-size:12px;color:var(--muted)}
+  .progress-wrap{margin-bottom:28px;display:none}
+  .progress-wrap.visible{display:block}
+  .progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .progress-header span{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+  .progress-header strong{font-size:18px;color:var(--accent);font-weight:700}
+  .progress-bar{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .4s;width:0%}
+  .group-section{margin-bottom:28px}
+  .group-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:0 4px}
+  .group-badge{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);letter-spacing:2px;line-height:1}
+  .group-teams{font-size:12px;color:var(--muted);font-weight:500}
+  .match-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:10px;
+    display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;transition:border-color .2s,background .2s}
+  .match-card.filled{border-color:#1e3a2a;background:#0f1e14}
+  .match-date{grid-column:1/-1;font-size:11px;color:var(--muted);letter-spacing:.5px;margin-bottom:4px;font-weight:500}
+  .team{display:flex;align-items:center;gap:10px}
+  .team.away{flex-direction:row-reverse;text-align:right}
+  .team-flag{font-size:26px;line-height:1;flex-shrink:0}
+  .team-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;line-height:1.1}
+  .score-block{display:flex;align-items:center;gap:6px;flex-shrink:0}
+  .score-input{width:44px;height:44px;background:var(--input-bg);border:2px solid var(--border);border-radius:10px;color:var(--text);
+    font-family:'Bebas Neue',sans-serif;font-size:26px;text-align:center;transition:border-color .2s,background .2s;-moz-appearance:textfield}
+  .score-input::-webkit-inner-spin-button,.score-input::-webkit-outer-spin-button{-webkit-appearance:none}
+  .score-input:focus{outline:none;border-color:var(--accent);background:#1a2030}
+  .score-input.has-value{border-color:#2d4a35;background:#0f1a12;color:var(--green)}
+  .score-sep{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--muted)}
+  .matches-locked{pointer-events:none;opacity:.35;user-select:none}
+  .submit-section{position:sticky;bottom:0;background:linear-gradient(0deg,var(--bg) 70%,transparent);padding:24px 0 32px}
+  .btn-submit{width:100%;padding:18px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:14px;
+    color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;cursor:pointer;transition:opacity .2s,transform .1s;position:relative;overflow:hidden}
+  .btn-submit:hover{opacity:.9}.btn-submit:active{transform:scale(.98)}.btn-submit:disabled{opacity:.35;cursor:not-allowed}
+  .btn-submit::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#ffffff22,transparent)}
+  .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a2a1a;border:1px solid var(--green);color:var(--green);
+    padding:14px 24px;border-radius:12px;font-weight:600;font-size:14px;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;z-index:100}
+  .toast.error{background:#2a1a1a;border-color:var(--red);color:var(--red)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .sent-screen{display:none;text-align:center;padding:60px 24px}
+  .sent-screen.visible{display:block}
+  .sent-icon{font-size:72px;margin-bottom:20px}
+  .sent-screen h2{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:3px;margin-bottom:12px}
+  .sent-screen h2.ok{color:var(--green)}.sent-screen h2.err{color:var(--red)}
+  .sent-screen p{color:var(--muted);font-size:15px;line-height:1.6}
+  .btn-back{margin-top:28px;display:inline-block;padding:12px 28px;border:1px solid var(--border);border-radius:10px;
+    color:var(--muted);font-size:14px;cursor:pointer;background:none;transition:border-color .2s}
+  .btn-back:hover{border-color:var(--accent);color:var(--accent)}
+  @media(max-width:480px){
+    .team-name{font-size:13px}.score-input{width:40px;height:40px;font-size:22px}
+    .match-card{padding:12px 14px;gap:8px}.team-flag{font-size:22px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="trophy">🏆</div>
+  <h1>Prode<span>Mundial 2026</span></h1>
+  <p class="subtitle">Completá tus pronósticos antes del 7 de junio · Hora Argentina</p>
+</header>
+<div class="container">
+  <!-- SENT SCREEN -->
+  <div class="sent-screen" id="sentScreen">
+    <div class="sent-icon" id="sentIcon">⏳</div>
+    <h2 id="sentTitle">Enviando...</h2>
+    <p id="sentMsg">Por favor esperá un momento.</p>
+    <button class="btn-back" id="btnBack" style="display:none" onclick="resetForm()">Volver a completar</button>
+  </div>
+  <!-- MAIN FORM -->
+  <div id="mainForm">
+    <!-- Participante + PIN -->
+    <div class="card">
+      <label>¿Quién sos?</label>
+      <select id="participantSelect" onchange="onParticipantChange()">
+        <option value="">— Seleccioná tu nombre —</option>
+        <option>Martignoni, Santiago</option><option>Ausa Juan Ignacio</option>
+        <option>Ausa, Sofi - Tomi</option><option>Martignoni, Juan</option>
+        <option>Bravo, Lautaro</option><option>Palermo, Gustavo</option>
+        <option>Calafell, Gustavo</option><option>Shaieb, Sebastián</option>
+        <option>Calafell, Joaquin</option><option>Galli, Manuel</option>
+        <option>Vazquez, Pablo</option><option>Sarcione, Román</option>
+        <option>Calafell, Darío</option><option>Sarcione, Dana</option>
+        <option>Rosso, Carlos</option><option>Bezunartea, Cecilia</option>
+        <option>Oss, Mariano</option><option>Calafell, Facundo</option>
+        <option>Corsini, Marta</option><option>Mattone, Julia</option>
+        <option>Bezunartera, Cristina</option><option>Sarcione, Mateo</option>
+        <option>Laberne, Mercedes</option><option>Barudi, Ana</option>
+        <option>Laberne, Guillermo</option><option>Calafell, Agustina</option>
+        <option>Mehaudy, Enrique</option>
+      </select>
+      <div style="margin-top:20px">
+        <label>Tu PIN secreto</label>
+        <div class="pin-row">
+          <input type="number" id="pinInput" placeholder="····" oninput="if(this.value.length>4)this.value=this.value.slice(0,4)" onkeydown="if(event.key==='Enter')verifyPin()">
+          <button class="btn-verify" onclick="verifyPin()">Verificar</button>
+        </div>
+        <div class="pin-status" id="pinStatus"></div>
+        <div class="pin-attempts" id="pinAttempts"></div>
+      </div>
+    </div>
+    <!-- Progress -->
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-header"><span>Progreso</span><strong id="progressCount">0 / 72</strong></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <!-- Matches -->
+    <div id="matchesContainer" class="matches-locked"></div>
+    <!-- Submit -->
+    <div class="submit-section">
+      <button class="btn-submit" id="btnSubmit" onclick="submitForm()">Enviar pronósticos →</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const PINS={'Martignoni, Santiago':'6702','Ausa Juan Ignacio':'1922','Ausa, Sofi - Tomi':'3409',
+'Martignoni, Juan':'4810','Bravo, Lautaro':'5370','Palermo, Gustavo':'1930',
+'Calafell, Gustavo':'8219','Shaieb, Sebastián':'7325','Calafell, Joaquin':'8410',
+'Galli, Manuel':'5023','Vazquez, Pablo':'9056','Sarcione, Román':'1053',
+'Calafell, Darío':'7825','Sarcione, Dana':'9799','Rosso, Carlos':'5200',
+'Bezunartea, Cecilia':'9673','Oss, Mariano':'4977','Calafell, Facundo':'1885',
+'Corsini, Marta':'8874','Mattone, Julia':'4479','Bezunartera, Cristina':'4988',
+'Sarcione, Mateo':'5854','Laberne, Mercedes':'7869','Barudi, Ana':'4176',
+'Laberne, Guillermo':'6177','Calafell, Agustina':'7063','Mehaudy, Enrique':'8717'};
+
+const GROUPS=[
+{letter:'A',teams:['México 🇲🇽','Sudáfrica 🇿🇦','Corea del Sur 🇰🇷','Rep. Checa 🇨🇿'],matches:[
+['México 🇲🇽','Sudáfrica 🇿🇦','11/06 16:00hs'],['Corea del Sur 🇰🇷','Rep. Checa 🇨🇿','11/06 23:00hs'],
+['México 🇲🇽','Corea del Sur 🇰🇷','18/06 13:00hs'],['Sudáfrica 🇿🇦','Rep. Checa 🇨🇿','18/06 22:00hs'],
+['México 🇲🇽','Rep. Checa 🇨🇿','24/06 22:00hs'],['Sudáfrica 🇿🇦','Corea del Sur 🇰🇷','24/06 22:00hs']]},
+{letter:'B',teams:['Canadá 🇨🇦','Bosnia 🇧🇦','Qatar 🇶🇦','Suiza 🇨🇭'],matches:[
+['Canadá 🇨🇦','Bosnia 🇧🇦','12/06 16:00hs'],['Qatar 🇶🇦','Suiza 🇨🇭','13/06 16:00hs'],
+['Canadá 🇨🇦','Qatar 🇶🇦','18/06 17:00hs'],['Bosnia 🇧🇦','Suiza 🇨🇭','19/06 16:00hs'],
+['Canadá 🇨🇦','Suiza 🇨🇭','24/06 22:00hs'],['Bosnia 🇧🇦','Qatar 🇶🇦','24/06 22:00hs']]},
+{letter:'C',teams:['Brasil 🇧🇷','Marruecos 🇲🇦','Haití 🇭🇹','Escocia 🏴󠁧󠁢󠁳󠁣󠁴󠁿'],matches:[
+['Brasil 🇧🇷','Marruecos 🇲🇦','13/06 19:00hs'],['Haití 🇭🇹','Escocia 🏴󠁧󠁢󠁳󠁣󠁴󠁿','13/06 22:00hs'],
+['Brasil 🇧🇷','Haití 🇭🇹','19/06 19:00hs'],['Marruecos 🇲🇦','Escocia 🏴󠁧󠁢󠁳󠁣󠁴󠁿','19/06 22:00hs'],
+['Brasil 🇧🇷','Escocia 🏴󠁧󠁢󠁳󠁣󠁴󠁿','25/06 22:00hs'],['Marruecos 🇲🇦','Haití 🇭🇹','25/06 22:00hs']]},
+{letter:'D',teams:['EE.UU. 🇺🇸','Paraguay 🇵🇾','Australia 🇦🇺','Turquía 🇹🇷'],matches:[
+['EE.UU. 🇺🇸','Paraguay 🇵🇾','12/06 22:00hs'],['Australia 🇦🇺','Turquía 🇹🇷','13/06 01:00hs'],
+['EE.UU. 🇺🇸','Australia 🇦🇺','19/06 16:00hs'],['Paraguay 🇵🇾','Turquía 🇹🇷','20/06 01:00hs'],
+['EE.UU. 🇺🇸','Turquía 🇹🇷','25/06 17:00hs'],['Paraguay 🇵🇾','Australia 🇦🇺','25/06 17:00hs']]},
+{letter:'E',teams:['Alemania 🇩🇪','Curazao 🇨🇼','C. Marfil 🇨🇮','Ecuador 🇪🇨'],matches:[
+['Alemania 🇩🇪','Curazao 🇨🇼','14/06 14:00hs'],['C. Marfil 🇨🇮','Ecuador 🇪🇨','14/06 17:00hs'],
+['Alemania 🇩🇪','C. Marfil 🇨🇮','20/06 14:00hs'],['Curazao 🇨🇼','Ecuador 🇪🇨','20/06 21:00hs'],
+['Alemania 🇩🇪','Ecuador 🇪🇨','25/06 17:00hs'],['Curazao 🇨🇼','C. Marfil 🇨🇮','25/06 17:00hs']]},
+{letter:'F',teams:['P. Bajos 🇳🇱','Japón 🇯🇵','Suecia 🇸🇪','Túnez 🇹🇳'],matches:[
+['P. Bajos 🇳🇱','Japón 🇯🇵','14/06 17:00hs'],['Suecia 🇸🇪','Túnez 🇹🇳','14/06 23:00hs'],
+['P. Bajos 🇳🇱','Suecia 🇸🇪','20/06 13:00hs'],['Japón 🇯🇵','Túnez 🇹🇳','21/06 01:00hs'],
+['P. Bajos 🇳🇱','Túnez 🇹🇳','25/06 22:00hs'],['Japón 🇯🇵','Suecia 🇸🇪','25/06 22:00hs']]},
+{letter:'G',teams:['Bélgica 🇧🇪','Irán 🇮🇷','N. Zelanda 🇳🇿','Egipto 🇪🇬'],matches:[
+['Bélgica 🇧🇪','Irán 🇮🇷','14/06 20:00hs'],['N. Zelanda 🇳🇿','Egipto 🇪🇬','15/06 19:00hs'],
+['Bélgica 🇧🇪','N. Zelanda 🇳🇿','20/06 17:00hs'],['Irán 🇮🇷','Egipto 🇪🇬','21/06 13:00hs'],
+['Bélgica 🇧🇪','Egipto 🇪🇬','26/06 21:00hs'],['Irán 🇮🇷','N. Zelanda 🇳🇿','26/06 21:00hs']]},
+{letter:'H',teams:['España 🇪🇸','Cabo Verde 🇨🇻','A. Saudita 🇸🇦','Uruguay 🇺🇾'],matches:[
+['España 🇪🇸','Cabo Verde 🇨🇻','15/06 13:00hs'],['A. Saudita 🇸🇦','Uruguay 🇺🇾','15/06 16:00hs'],
+['España 🇪🇸','A. Saudita 🇸🇦','21/06 13:00hs'],['Cabo Verde 🇨🇻','Uruguay 🇺🇾','21/06 19:00hs'],
+['España 🇪🇸','Uruguay 🇺🇾','26/06 22:00hs'],['Cabo Verde 🇨🇻','A. Saudita 🇸🇦','26/06 22:00hs']]},
+{letter:'I',teams:['Francia 🇫🇷','Senegal 🇸🇳','Irak 🇮🇶','Noruega 🇳🇴'],matches:[
+['Francia 🇫🇷','Senegal 🇸🇳','15/06 16:00hs'],['Irak 🇮🇶','Noruega 🇳🇴','15/06 19:00hs'],
+['Francia 🇫🇷','Irak 🇮🇶','21/06 18:00hs'],['Senegal 🇸🇳','Noruega 🇳🇴','22/06 14:00hs'],
+['Francia 🇫🇷','Noruega 🇳🇴','27/06 16:00hs'],['Senegal 🇸🇳','Irak 🇮🇶','27/06 16:00hs']]},
+{letter:'J',teams:['Argentina 🇦🇷','Argelia 🇩🇿','Austria 🇦🇹','Jordania 🇯🇴'],matches:[
+['Argentina 🇦🇷','Argelia 🇩🇿','16/06 22:00hs'],['Austria 🇦🇹','Jordania 🇯🇴','17/06 01:00hs'],
+['Argentina 🇦🇷','Austria 🇦🇹','22/06 14:00hs'],['Argelia 🇩🇿','Jordania 🇯🇴','22/06 18:00hs'],
+['Argentina 🇦🇷','Jordania 🇯🇴','27/06 23:00hs'],['Argelia 🇩🇿','Austria 🇦🇹','27/06 23:00hs']]},
+{letter:'K',teams:['Portugal 🇵🇹','R.D.Congo 🇨🇩','Uzbekistán 🇺🇿','Colombia 🇨🇴'],matches:[
+['Portugal 🇵🇹','R.D.Congo 🇨🇩','17/06 14:00hs'],['Uzbekistán 🇺🇿','Colombia 🇨🇴','17/06 23:00hs'],
+['Portugal 🇵🇹','Uzbekistán 🇺🇿','23/06 14:00hs'],['R.D.Congo 🇨🇩','Colombia 🇨🇴','23/06 23:00hs'],
+['Portugal 🇵🇹','Colombia 🇨🇴','27/06 20:30hs'],['R.D.Congo 🇨🇩','Uzbekistán 🇺🇿','27/06 20:30hs']]},
+{letter:'L',teams:['Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿','Croacia 🇭🇷','Ghana 🇬🇭','Panamá 🇵🇦'],matches:[
+['Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿','Croacia 🇭🇷','17/06 17:00hs'],['Ghana 🇬🇭','Panamá 🇵🇦','17/06 20:00hs'],
+['Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿','Ghana 🇬🇭','23/06 17:00hs'],['Croacia 🇭🇷','Panamá 🇵🇦','23/06 20:00hs'],
+['Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿','Panamá 🇵🇦','27/06 17:00hs'],['Croacia 🇭🇷','Ghana 🇬🇭','27/06 17:00hs']]},
+];
+
+let matchIdx=0;
+const ALL_MATCHES=[];
+GROUPS.forEach(g=>g.matches.forEach(m=>ALL_MATCHES.push({group:g.letter,home:m[0],away:m[1],date:m[2],idx:matchIdx++})));
+
+let pinVerified=false,failedAttempts=0;
+const MAX_ATTEMPTS=5;
+
+function onParticipantChange(){
+  pinVerified=false;failedAttempts=0;
+  document.getElementById('pinInput').value='';
+  document.getElementById('pinInput').className='';
+  document.getElementById('pinStatus').textContent='';
+  document.getElementById('pinStatus').className='pin-status';
+  document.getElementById('pinAttempts').textContent='';
+  document.getElementById('matchesContainer').classList.add('matches-locked');
+  document.getElementById('btnSubmit').disabled=true;
+}
+
+function verifyPin(){
+  const participant=document.getElementById('participantSelect').value;
+  const pinInput=document.getElementById('pinInput');
+  const statusEl=document.getElementById('pinStatus');
+  const attemptsEl=document.getElementById('pinAttempts');
+  if(!participant){showToast('Primero seleccioná tu nombre',true);return;}
+  if(failedAttempts>=MAX_ATTEMPTS){showToast('Demasiados intentos',true);return;}
+  if(pinInput.value.trim()===PINS[participant]){
+    pinVerified=true;
+    pinInput.classList.remove('error');pinInput.classList.add('ok');
+    statusEl.textContent='✓ PIN correcto — ya podés completar tus pronósticos';
+    statusEl.className='pin-status ok';attemptsEl.textContent='';
+    document.getElementById('matchesContainer').classList.remove('matches-locked');
+    document.getElementById('btnSubmit').disabled=false;
+    setTimeout(()=>document.getElementById('matchesContainer').scrollIntoView({behavior:'smooth',block:'start'}),200);
+  } else {
+    failedAttempts++;
+    pinInput.classList.add('error');pinInput.classList.remove('ok');
+    void pinInput.offsetWidth;
+    const left=MAX_ATTEMPTS-failedAttempts;
+    statusEl.textContent='✗ PIN incorrecto';statusEl.className='pin-status err';
+    attemptsEl.textContent=left>0?`Te quedan ${left} intento${left!==1?'s':''}`:'Sin más intentos. Pedile el PIN al organizador.';
+    if(left===0){pinInput.disabled=true;document.querySelector('.btn-verify').disabled=true;}
+    setTimeout(()=>pinInput.classList.remove('error'),400);
+  }
+}
+
+function splitTeam(full){
+  const parts=full.split(' ');
+  return{flag:parts[parts.length-1],name:parts.slice(0,-1).join(' ')};
+}
+
+function buildMatches(){
+  const container=document.getElementById('matchesContainer');
+  container.innerHTML='';
+  GROUPS.forEach(g=>{
+    const section=document.createElement('div');
+    section.className='group-section';
+    section.innerHTML=`<div class="group-header"><div class="group-badge">GRUPO ${g.letter}</div><div class="group-teams">${g.teams.map(t=>splitTeam(t).name).join(' · ')}</div></div>`;
+    g.matches.forEach(([homeRaw,awayRaw,date])=>{
+      const gi=ALL_MATCHES.findIndex(m=>m.group===g.letter&&m.home===homeRaw);
+      const home=splitTeam(homeRaw),away=splitTeam(awayRaw);
+      const card=document.createElement('div');
+      card.className='match-card';card.dataset.idx=gi;
+      card.innerHTML=`
+        <div class="match-date" style="grid-column:1/-1">${date}</div>
+        <div class="team home"><span class="team-flag">${home.flag}</span><span class="team-name">${home.name}</span></div>
+        <div class="score-block">
+          <input class="score-input" type="number" min="0" max="20" placeholder="—" data-idx="${gi}" data-side="home" oninput="onScoreInput(this)" onkeydown="onKeyNav(event,this)">
+          <span class="score-sep">-</span>
+          <input class="score-input" type="number" min="0" max="20" placeholder="—" data-idx="${gi}" data-side="away" oninput="onScoreInput(this)" onkeydown="onKeyNav(event,this)">
+        </div>
+        <div class="team away"><span class="team-flag">${away.flag}</span><span class="team-name">${away.name}</span></div>`;
+      section.appendChild(card);
+    });
+    container.appendChild(section);
+  });
+}
+
+function onScoreInput(input){
+  if(input.value!==''){
+    input.classList.add('has-value');
+    if(input.value.length===1&&parseInt(input.value)<=9){
+      const inputs=[...document.querySelectorAll('.score-input')];
+      const i=inputs.indexOf(input);
+      if(i<inputs.length-1)inputs[i+1].focus();
+    }
+  } else input.classList.remove('has-value');
+  const card=document.querySelector(`.match-card[data-idx="${input.dataset.idx}"]`);
+  card.classList.toggle('filled',[...card.querySelectorAll('.score-input')].every(i=>i.value!==''));
+  const done=document.querySelectorAll('.match-card.filled').length;
+  document.getElementById('progressCount').textContent=`${done} / ${ALL_MATCHES.length}`;
+  document.getElementById('progressFill').style.width=`${(done/ALL_MATCHES.length)*100}%`;
+  document.getElementById('progressWrap').classList.add('visible');
+}
+
+function onKeyNav(e,input){
+  const inputs=[...document.querySelectorAll('.score-input')];
+  const i=inputs.indexOf(input);
+  if((e.key==='ArrowRight'||(e.key==='Tab'&&!e.shiftKey))&&i<inputs.length-1){e.preventDefault();inputs[i+1].focus();}
+  else if((e.key==='ArrowLeft'||(e.key==='Tab'&&e.shiftKey))&&i>0){e.preventDefault();inputs[i-1].focus();}
+}
+
+function buildDataLine(participant){
+  const parts=[`DATA:${participant}`];
+  document.querySelectorAll('.match-card').forEach(card=>{
+    const inputs=card.querySelectorAll('.score-input');
+    const h=inputs[0].value,a=inputs[1].value;
+    if(h!==''&&a!=='')parts.push(`${card.dataset.idx}:${h}-${a}`);
+  });
+  return parts.join('|');
+}
+
+function submitForm(){
+  const participant=document.getElementById('participantSelect').value;
+  if(!participant){showToast('Seleccioná tu nombre primero',true);return;}
+  if(!pinVerified){showToast('Verificá tu PIN primero',true);return;}
+
+  // Build mail body
+  const lines=[];
+  let missing=0;
+  GROUPS.forEach(g=>{
+    lines.push(`\n━━ GRUPO ${g.letter} ━━`);
+    g.matches.forEach(([homeRaw,awayRaw,date])=>{
+      const gi=ALL_MATCHES.findIndex(m=>m.group===g.letter&&m.home===homeRaw);
+      const card=document.querySelector(`.match-card[data-idx="${gi}"]`);
+      const inputs=card.querySelectorAll('.score-input');
+      const h=inputs[0].value,a=inputs[1].value;
+      const home=splitTeam(homeRaw).name,away=splitTeam(awayRaw).name;
+      if(h===''||a===''){lines.push(`  ${date}  ${home} ??? - ??? ${away}  <- SIN PRONOSTICO`);missing++;}
+      else lines.push(`  ${date}  ${home} ${h} - ${a} ${away}`);
+    });
+  });
+
+  const subject=`Prode Mundial 2026 - ${participant}`;
+  const body=`Pronosticos de: ${participant}\n${'='.repeat(50)}${lines.join('\n')}\n\n${'='.repeat(50)}\nTotal: ${ALL_MATCHES.length} partidos | Sin pronostico: ${missing}\n\n--- NO BORRAR ---\n${buildDataLine(participant)}`;
+
+  // Show loading
+  document.getElementById('mainForm').style.display='none';
+  document.getElementById('sentScreen').classList.add('visible');
+  document.getElementById('sentIcon').textContent='⏳';
+  document.getElementById('sentTitle').textContent='Enviando...';
+  document.getElementById('sentTitle').className='';
+  document.getElementById('sentMsg').textContent='Por favor esperá un momento.';
+  document.getElementById('btnBack').style.display='none';
+
+  // Send via EmailJS
+  emailjs.send('service_9pxt2jq','template_ddnzwic',{
+    subject: subject,
+    message: body,
+    name: participant,
+  }).then(()=>{
+    document.getElementById('sentIcon').textContent='✅';
+    document.getElementById('sentTitle').textContent='¡Pronósticos enviados!';
+    document.getElementById('sentTitle').className='ok';
+    document.getElementById('sentMsg').textContent='El mail llegó correctamente. ¡Buena suerte en el prode!';
+    document.getElementById('btnBack').style.display='inline-block';
+  }).catch(err=>{
+    document.getElementById('sentIcon').textContent='❌';
+    document.getElementById('sentTitle').textContent='Error al enviar';
+    document.getElementById('sentTitle').className='err';
+    document.getElementById('sentMsg').textContent='Hubo un problema. Tocá "Volver" e intentá de nuevo.';
+    document.getElementById('btnBack').style.display='inline-block';
+    console.error('EmailJS error:',err);
+  });
+}
+
+function resetForm(){
+  document.getElementById('sentScreen').classList.remove('visible');
+  document.getElementById('mainForm').style.display='';
+  onParticipantChange();
+}
+
+function showToast(msg,isError=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(isError?' error':'')+' show';
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+buildMatches();
+document.getElementById('btnSubmit').disabled=true;
+</script>
+</body>
+</html>
